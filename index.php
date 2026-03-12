@@ -40,7 +40,7 @@ $result = $conn->query($sql);
       <ul>
         <li><a href="#" class="active">Kunder</a></li>
         <li><a href="#">Kontaktpersoner</a></li>
-        <li><a href="#">Logg ut</a></li>
+        <li><a href="logout.php">Logg ut</a></li>
       </ul>
     </nav>
     <div class="sidebar-footer">Gruppe 4</div>
