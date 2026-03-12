@@ -58,7 +58,7 @@ echo "Bruker finnes ikke";
 
         <button type="submit" name="bekreft">Logg inn</button>
 
-        <p>Har du ikke bruker? <a href="register.php">Registrer deg</a></p>
+        <p>Har du ikke bruker? <a href="registrer.php">Registrer deg</a></p>
     </form>
 
 </body>
