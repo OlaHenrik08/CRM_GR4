@@ -1,81 +1,85 @@
 <?php
 include "db.php";
 
-if(isset($_POST['bekreft'])){
+$feil = "";
 
-$fornavn = $_POST['fornavn'];
-$etternavn = $_POST['etternavn'];
-$username = $_POST['username'];
-$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-$sql = "INSERT INTO users (fornavn, etternavn, username, password)
-VALUES ('$fornavn','$etternavn','$username','$password')";
+    $fornavn   = $_POST['fornavn'];
+    $etternavn = $_POST['etternavn'];
+    $username  = $_POST['username'];
+    $password  = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-if($conn->query($sql) === TRUE){
+    $sql = "INSERT INTO users (fornavn, etternavn, username, password)
+            VALUES ('$fornavn', '$etternavn', '$username', '$password')";
 
-header("Location: login.php");
-exit();
-
-}else{
-echo "Noe gikk galt";
-}
-
+    if($conn->query($sql) === TRUE){
+        header("Location: login.php");
+        exit();
+    } else {
+        $feil = "Noe gikk galt. Brukernavnet er kanskje allerede i bruk.";
+    }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registrer deg</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrer deg - CRM Gruppe 4</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="main-content">
 
-<div class="topbar">
-<div>
-<h1>Kundedatabase</h1>
-<p class="subtitle">Opprett ny bruker</p>
-</div>
-</div>
+  <div class="topbar">
+    <div>
+      <h1>Kundedatabase</h1>
+      <p class="subtitle">Opprett ny bruker</p>
+    </div>
+  </div>
 
-<section class="table-section" style="max-width:400px; margin:auto;">
+  <section class="table-section auth-section">
 
-<form method="POST">
+    <?php if($feil){ ?>
+      <p class="error"><?php echo $feil; ?></p>
+    <?php } ?>
 
-<label>Fornavn</label>
-<input type="text" name="fornavn" required>
+    <form method="POST" action="registrer.php">
 
-<br><br>
+      <div class="form-row">
+        <label for="fornavn">Fornavn</label>
+        <input type="text" id="fornavn" name="fornavn" required>
+      </div>
 
-<label>Etternavn</label>
-<input type="text" name="etternavn" required>
+      <div class="form-row">
+        <label for="etternavn">Etternavn</label>
+        <input type="text" id="etternavn" name="etternavn" required>
+      </div>
 
-<br><br>
+      <div class="form-row">
+        <label for="username">Brukernavn</label>
+        <input type="text" id="username" name="username" required>
+      </div>
 
-<label>Brukernavn</label>
-<input type="text" name="username" required>
+      <div class="form-row">
+        <label for="password">Passord</label>
+        <input type="password" id="password" name="password" required>
+      </div>
 
-<br><br>
+      <div class="form-row">
+        <button type="submit" class="btn primary">Registrer</button>
+      </div>
 
-<label>Passord</label>
-<input type="password" name="password" required>
+      <p class="auth-link">
+        Har du allerede bruker? <a href="login.php">Logg inn</a>
+      </p>
 
-<br><br>
+    </form>
 
-<button type="submit" name="bekreft" class="btn primary">Registrer</button>
-
-<p style="margin-top:15px;">
-Har du allerede bruker? <a href="login.php">Logg inn</a>
-</p>
-
-</form>
-
-</section>
+  </section>
 
 </div>
 
