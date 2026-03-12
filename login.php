@@ -2,6 +2,8 @@
 session_start();
 include "db.php";
 
+$feil = "";
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 $username = $_POST["username"];
@@ -26,40 +28,64 @@ header("Location: index.php");
 exit();
 
 }else{
-echo "Feil passord";
+$feil = "Feil passord";
 }
 
 }else{
-echo "Bruker finnes ikke";
+$feil = "Bruker finnes ikke";
 }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logg inn</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logg inn</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <H1>Kundedatabase</H1>
+<div class="main-content">
 
-    <h1>Logg inn</h1>
+<div class="topbar">
+<div>
+<h1>Kundedatabase</h1>
+<p class="subtitle">Logg inn i CRM-systemet</p>
+</div>
+</div>
 
-    <form id="logg-inn-form" method="POST" action="logginn.php">
-        <label id="brukernavn" for="username">Brukernavn:</label>
-        <input type="text" id="brukernavn" name="username" required><br>
+<section class="table-section" style="max-width:400px; margin:auto;">
 
-        <label id="passord" for="password">Passord:</label>
-        <input type="password" id="passord" name="password" required><br>
+<?php if($feil){ ?>
+<p style="color:red; margin-bottom:10px;"><?php echo $feil; ?></p>
+<?php } ?>
 
-        <button type="submit" name="bekreft">Logg inn</button>
+<form method="POST">
 
-        <p>Har du ikke bruker? <a href="registrer.php">Registrer deg</a></p>
-    </form>
+<label>Brukernavn</label>
+<input type="text" name="username" required>
+
+<br><br>
+
+<label>Passord</label>
+<input type="password" name="password" required>
+
+<br><br>
+
+<button type="submit" class="btn primary">Logg inn</button>
+
+<p style="margin-top:15px;">
+Har du ikke bruker? <a href="registrer.php">Registrer deg</a>
+</p>
+
+</form>
+
+</section>
+
+</div>
 
 </body>
 </html>
