@@ -24,40 +24,60 @@ echo "Noe gikk galt";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registrer deg</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
+<div class="main-content">
+
+<div class="topbar">
+<div>
 <h1>Kundedatabase</h1>
+<p class="subtitle">Opprett ny bruker</p>
+</div>
+</div>
 
-<h1>Registrer deg</h1>
+<section class="table-section" style="max-width:400px; margin:auto;">
 
-<form id="logg-inn-form" method="POST">
+<form method="POST">
 
-<label for="fornavn">Fornavn:</label>
-<input type="text" name="fornavn" required><br>
+<label>Fornavn</label>
+<input type="text" name="fornavn" required>
 
-<label for="etternavn">Etternavn:</label>
-<input type="text" name="etternavn" required><br>
+<br><br>
 
-<label for="username">Brukernavn:</label>
-<input type="text" name="username" required><br>
+<label>Etternavn</label>
+<input type="text" name="etternavn" required>
 
-<label for="password">Passord:</label>
-<input type="password" name="password" required><br>
+<br><br>
 
-<button type="submit" name="bekreft">Registrer</button>
+<label>Brukernavn</label>
+<input type="text" name="username" required>
 
-<p>Har du allerede bruker? <a href="login.php">Logg inn</a></p>
+<br><br>
+
+<label>Passord</label>
+<input type="password" name="password" required>
+
+<br><br>
+
+<button type="submit" name="bekreft" class="btn primary">Registrer</button>
+
+<p style="margin-top:15px;">
+Har du allerede bruker? <a href="login.php">Logg inn</a>
+</p>
 
 </form>
+
+</section>
+
+</div>
 
 </body>
 </html>
