@@ -1,3 +1,9 @@
+/* ==============================================
+   CRM Gruppe 4 - Stylesheet
+   ============================================== */
+
+/* ---- Reset ---- */
+
 * {
   margin: 0;
   padding: 0;
@@ -10,10 +16,14 @@ body {
   color: #333;
 }
 
+/* ---- Layout ---- */
+
 .app {
   display: flex;
   min-height: 100vh;
 }
+
+/* ---- Sidebar ---- */
 
 .sidebar {
   width: 220px;
@@ -59,10 +69,14 @@ body {
   opacity: 0.7;
 }
 
+/* ---- Hovedinnhold ---- */
+
 .main-content {
   flex: 1;
   padding: 30px;
 }
+
+/* ---- Topbar ---- */
 
 .topbar {
   display: flex;
@@ -71,10 +85,17 @@ body {
   margin-bottom: 25px;
 }
 
+.topbar h2 {
+  font-size: 20px;
+}
+
 .subtitle {
   color: #6b7280;
   font-size: 14px;
+  margin-top: 4px;
 }
+
+/* ---- Knapper ---- */
 
 .btn {
   padding: 8px 14px;
@@ -83,6 +104,7 @@ body {
   font-size: 14px;
   border: none;
   cursor: pointer;
+  display: inline-block;
 }
 
 .primary {
@@ -90,8 +112,17 @@ body {
   color: white;
 }
 
+.primary:hover {
+  background: #2563eb;
+}
+
 .secondary {
   background: #e5e7eb;
+  color: #333;
+}
+
+.secondary:hover {
+  background: #d1d5db;
 }
 
 .view-btn {
@@ -114,6 +145,12 @@ body {
   gap: 6px;
 }
 
+.btn-margin-left {
+  margin-left: 8px;
+}
+
+/* ---- Søkeverktøylinje ---- */
+
 .toolbar {
   margin-bottom: 20px;
 }
@@ -126,11 +163,17 @@ body {
   margin-right: 8px;
 }
 
+/* ---- Tabeller ---- */
+
 .table-section {
   background: white;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.table-section-mb {
+  margin-bottom: 30px;
 }
 
 table {
@@ -145,11 +188,22 @@ th {
   font-size: 14px;
 }
 
+th.label-col {
+  width: 180px;
+}
+
 td {
   padding: 12px;
   border-top: 1px solid #e5e7eb;
   font-size: 14px;
 }
+
+td.tom-rad {
+  text-align: center;
+  color: #6b7280;
+}
+
+/* ---- Badges ---- */
 
 .badge {
   padding: 4px 8px;
@@ -166,3 +220,68 @@ td {
   background: #ef4444;
 }
 
+/* ---- Skjema ---- */
+
+.form-section {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  max-width: 560px;
+}
+
+.form-section h2 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* form-row: wrapper for label + input */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-row label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"],
+.form-row select,
+.form-row textarea {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* ---- Innlogging / Registrering ---- */
+
+.auth-section {
+  max-width: 400px;
+  margin: auto;
+}
+
+.auth-link {
+  margin-top: 15px;
+}
+
+/* ---- Feilmelding ---- */
+
+.error {
+  color: #ef4444;
+  margin-bottom: 12px;
+  font-size: 14px;
+}

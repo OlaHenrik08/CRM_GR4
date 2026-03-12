@@ -1,25 +1,24 @@
 <?php
 session_start();
+include 'db.php';
 
-// // Sjekker om brukeren er logget inn
-// if(!isset($_SESSION['user'])){
-//     header("Location: login.php");
-//     exit();
-// }
-
-$host = "localhost";
-$user = "root";
-$password = "";
-$db = "crm_gr4";
-
-$conn = new mysqli($host, $user, $password, $db);
-
-if ($conn->connect_error) {
-    die("Kunne ikke koble til databasen: " . $conn->connect_error);
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
 }
 
-$sql = "SELECT * FROM kunde";
-$result = $conn->query($sql);
+$sok = trim($_GET['sok'] ?? '');
+
+if ($sok !== '') {
+    $stmt = $conn->prepare("SELECT * FROM kunde WHERE firmanavn LIKE ? OR org_nr LIKE ? OR epost LIKE ?");
+    $like = "%$sok%";
+    $stmt->bind_param('sss', $like, $like, $like);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+} else {
+    $result = $conn->query("SELECT * FROM kunde ORDER BY firmanavn ASC");
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,9 +61,12 @@ $result = $conn->query($sql);
           type="text"
           name="sok"
           placeholder="Søk etter firmanavn, org.nr, e-post..."
-          value="<?php echo isset($_GET['sok']) ? htmlspecialchars($_GET['sok']) : ''; ?>"
+          value="<?php echo h($sok); ?>"
         />
         <button type="submit" class="btn secondary">Søk</button>
+        <?php if ($sok !== ''): ?>
+          <a href="index.php" class="btn secondary">Nullstill</a>
+        <?php endif; ?>
       </form>
     </section>
 
@@ -81,43 +83,46 @@ $result = $conn->query($sql);
             <th>Handlinger</th>
           </tr>
         </thead>
-        <body>
-
-          <?php
-          while ($kunde = mysqli_fetch_assoc($result)) {
-          ?>
-          <tr>
-            <td data-label="Firmanavn"><?php echo htmlspecialchars($kunde['firmanavn']); ?></td>
-            <td data-label="Org.nr"><?php echo htmlspecialchars($kunde['org_nr']); ?></td>
-            <td data-label="Poststed"><?php echo htmlspecialchars($kunde['poststed']); ?></td>
-            <td data-label="Telefon"><?php echo htmlspecialchars($kunde['telefon']); ?></td>
-            <td data-label="E-post"><?php echo htmlspecialchars($kunde['epost']); ?></td>
-            <td data-label="Status">
-              <?php if ($kunde['status'] === 'Aktiv') { ?>
-                <span class="badge badge-aktiv">Aktiv</span>
-              <?php } else { ?>
-                <span class="badge badge-inaktiv">Inaktiv</span>
-              <?php } ?>
-            </td>
-            <td data-label="Handlinger">
-              <div class="action-buttons">
-                <a href="kunde_detalj.php?id=<?php echo $kunde['kunde_id']; ?>" class="btn view-btn">Vis</a>
-                <a href="kunde_skjema.php?id=<?php echo $kunde['kunde_id']; ?>" class="btn edit-btn">Rediger</a>
-                <a href="slett_kunde.php?id=<?php echo $kunde['kunde_id']; ?>"
-                   class="btn delete-btn"
-                   onclick="return confirm('Er du sikker på at du vil slette denne kunden?')">Slett</a>
-              </div>
-            </td>
-          </tr>
-          <?php } ?>
-
-        </body>
+        <tbody>
+          <?php if ($result && $result->num_rows > 0): ?>
+            <?php while ($kunde = $result->fetch_assoc()): ?>
+            <tr>
+              <td data-label="Firmanavn"><?php echo h($kunde['firmanavn']); ?></td>
+              <td data-label="Org.nr"><?php echo h($kunde['org_nr']); ?></td>
+              <td data-label="Poststed"><?php echo h($kunde['poststed']); ?></td>
+              <td data-label="Telefon"><?php echo h($kunde['telefon']); ?></td>
+              <td data-label="E-post"><?php echo h($kunde['epost']); ?></td>
+              <td data-label="Status">
+                <?php if ($kunde['status'] === 'Aktiv'): ?>
+                  <span class="badge badge-aktiv">Aktiv</span>
+                <?php else: ?>
+                  <span class="badge badge-inaktiv">Inaktiv</span>
+                <?php endif; ?>
+              </td>
+              <td data-label="Handlinger">
+                <div class="action-buttons">
+                  <a href="kunde_detalj.php?id=<?php echo (int)$kunde['kunde_id']; ?>" class="btn view-btn">Vis</a>
+                  <a href="kunde_skjema.php?id=<?php echo (int)$kunde['kunde_id']; ?>" class="btn edit-btn">Rediger</a>
+                  <a href="slett_kunde.php?id=<?php echo (int)$kunde['kunde_id']; ?>"
+                     class="btn delete-btn"
+                     onclick="return confirm('Er du sikker på at du vil slette denne kunden?')">Slett</a>
+                </div>
+              </td>
+            </tr>
+            <?php endwhile; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="7" class="tom-rad">
+                <?php echo $sok !== '' ? 'Ingen kunder funnet for "' . h($sok) . '".' : 'Ingen kunder registrert ennå.'; ?>
+              </td>
+            </tr>
+          <?php endif; ?>
+        </tbody>
       </table>
     </section>
 
   </main>
 </div>
 
-<script src="script.js"></script>
 </body>
 </html>
