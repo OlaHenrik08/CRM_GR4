@@ -38,8 +38,8 @@ $result = $conn->query($sql);
     <div class="logo">CRM<span class="logo-dot">.</span></div>
     <nav>
       <ul>
-        <li><a href="#" class="active">Kunder</a></li>
-        <li><a href="#">Kontaktpersoner</a></li>
+        <li><a href="index.php" class="active">Kunder</a></li>
+        <li><a href="kontaktpersoner.php">Kontaktpersoner</a></li>
         <li><a href="logout.php">Logg ut</a></li>
       </ul>
     </nav>
