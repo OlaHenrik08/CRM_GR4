@@ -79,6 +79,7 @@ if ($sok !== '') {
             <th>Poststed</th>
             <th>Telefon</th>
             <th>E-post</th>
+            <th>Opprettet</th>
             <th>Status</th>
             <th>Handlinger</th>
           </tr>
@@ -92,6 +93,7 @@ if ($sok !== '') {
               <td data-label="Poststed"><?php echo h($kunde['poststed']); ?></td>
               <td data-label="Telefon"><?php echo h($kunde['telefon']); ?></td>
               <td data-label="E-post"><?php echo h($kunde['epost']); ?></td>
+              <td data-label="Opprettet"><?php echo $kunde['opprettet_dato'] ? date('d.m.Y', strtotime($kunde['opprettet_dato'])) : '-'; ?></td>
               <td data-label="Status">
                 <?php if ($kunde['status'] === 'Aktiv'): ?>
                   <span class="badge badge-aktiv">Aktiv</span>
