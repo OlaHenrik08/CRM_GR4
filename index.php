@@ -28,6 +28,7 @@ if ($sok !== '') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRM - Gruppe 4</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
 </head>
 <body>
 
@@ -59,6 +60,8 @@ if ($sok !== '') {
       <form method="GET" action="index.php">
         <input
           type="text"
+          id="myInput"
+          onkeyup="myFunction()"
           name="sok"
           placeholder="Søk etter firmanavn, org.nr, e-post..."
           value="<?php echo h($sok); ?>"
