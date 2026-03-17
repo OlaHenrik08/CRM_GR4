@@ -7,15 +7,25 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-// Slett kontaktperson
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delid = (int)$_GET['delete'];
-    $stmt = $conn->prepare("DELETE FROM kontaktperson WHERE kontakt_id = ?");
-    $stmt->bind_param('i', $delid);
+// Definer søkevariabel
+$sok = trim($_GET['sok'] ?? '');
+
+if ($sok !== '') {
+    $stmt = $conn->prepare("SELECT kp.*, k.firmanavn
+                            FROM kontaktperson kp
+                            LEFT JOIN kunde k ON kp.kunde_id = k.kunde_id
+                            WHERE kp.fornavn LIKE ? OR kp.etternavn LIKE ? OR kp.epost LIKE ? OR k.firmanavn LIKE ?
+                            ORDER BY kp.etternavn ASC, kp.fornavn ASC");
+    $like = "%$sok%";
+    $stmt->bind_param('ssss', $like, $like, $like, $like);
     $stmt->execute();
+    $kontakter = $stmt->get_result();
     $stmt->close();
-    header("Location: kontaktpersoner.php");
-    exit();
+} else {
+    $kontakter = $conn->query("SELECT kp.*, k.firmanavn
+                               FROM kontaktperson kp
+                               LEFT JOIN kunde k ON kp.kunde_id = k.kunde_id
+                               ORDER BY kp.etternavn ASC, kp.fornavn ASC");
 }
 
 // Hent alle kontaktpersoner med firmanavn
@@ -32,6 +42,7 @@ $kontakter = $conn->query("SELECT kp.*, k.firmanavn
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kontaktpersoner - CRM Gruppe 4</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
 </head>
 <body>
 
@@ -58,6 +69,23 @@ $kontakter = $conn->query("SELECT kp.*, k.firmanavn
       </div>
       <a href="kontakt_skjema.php" class="btn primary">+ Ny kontaktperson</a>
     </div>
+
+        <section class="toolbar">
+      <form method="GET" action="kontaktpersoner.php">
+        <input
+          type="text"
+          id="myInput"
+          onkeyup="myFunction()"
+          name="sok"
+          placeholder="Søk etter firmanavn, org.nr, e-post..."
+          value="<?php echo h($sok); ?>"
+        />
+        <button type="submit" class="btn secondary">Søk</button>
+        <?php if ($sok !== ''): ?>
+          <a href="kontaktpersoner.php" class="btn secondary">Nullstill</a>
+        <?php endif; ?>
+      </form>
+    </section>
 
     <section class="table-section">
       <table>
