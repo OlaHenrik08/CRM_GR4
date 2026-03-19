@@ -1,22 +1,30 @@
 <?php
-include "db.php";
+include "db.php"; // Kobler til databasen
 
-$feil = "";
+$feil = ""; // Variabel for å lagre feilmelding
 
+// Sjekker om skjemaet er sendt (POST-request)
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+// Henter verdier fra skjemaet
     $fornavn   = $_POST['fornavn'];
     $etternavn = $_POST['etternavn'];
     $username  = $_POST['username'];
+
+// Krypterer passordet før lagring
     $password  = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
+// SQL-spørring for å legge inn ny bruker i databasen
     $sql = "INSERT INTO users (fornavn, etternavn, username, password)
             VALUES ('$fornavn', '$etternavn', '$username', '$password')";
 
+// Kjører spørringen og sjekker om det gikk bra
     if($conn->query($sql) === TRUE){
+// Sender brukeren videre til login-siden etter vellykket registrering
         header("Location: login.php");
         exit();
     } else {
+// Setter feilmelding hvis noe gikk galt (f.eks. brukernavn allerede i bruk)
         $feil = "Noe gikk galt. Brukernavnet er kanskje allerede i bruk.";
     }
 }
@@ -45,9 +53,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <section class="table-section auth-section">
 
     <?php if($feil){ ?>
+<!-- Viser feilmelding hvis noe gikk galt -->
       <p class="error"><?php echo $feil; ?></p>
     <?php } ?>
 
+<!-- Registreringsskjema -->
     <form method="POST" action="registrer.php">
 
       <div class="form-row">
@@ -71,10 +81,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       </div>
 
       <div class="form-row">
+<!-- Knapp for å sende inn skjemaet -->
         <button type="submit" class="btn primary">Registrer</button>
       </div>
 
       <p class="auth-link">
+<!-- Link til login-side -->
         Har du allerede bruker? <a href="login.php">Logg inn</a>
       </p>
 
