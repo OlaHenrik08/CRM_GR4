@@ -111,9 +111,9 @@ $kontakter = $conn->query("SELECT kp.*, k.firmanavn
               <td>
                 <div class="action-buttons">
                   <a href="kontakt_skjema.php?id=<?php echo (int)$row['kontakt_id']; ?>" class="btn edit-btn">Rediger</a>
-                  <a href="kontaktpersoner.php?delete=<?php echo (int)$row['kontakt_id']; ?>"
-                     class="btn delete-btn"
-                     onclick="return confirm('Er du sikker på at du vil slette denne kontaktpersonen?')">Slett</a>
+                  <a href="slett_kontakt.php?id=<?php echo (int)$row['kontakt_id']; ?>&kunde_id=<?php echo (int)$row['kunde_id']; ?>"
+                    class="btn delete-btn"
+                    onclick="return confirm('Er du sikker på at du vil slette denne kontaktpersonen?')">Slett</a>
                 </div>
               </td>
             </tr>
