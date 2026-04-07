@@ -188,4 +188,4 @@ http://localhost/[prosjektmappe]/login.php
 - **XSS-angrep** forebygges med `htmlspecialchars()`, tilgjengelig som hjelpefunksjonen `h()` definert i `db.php`.
 - **Sesjonsbeskyttelse:** Alle beskyttede sider sjekker `$_SESSION['user']` og redirecter til login ved manglende tilgang.
 
-> **Merk:** Noen eldre deler av koden (f.eks. i `kontakt_skjema.php`) bruker direkte strenginterpolasjon i SQL-spørringer. Dette bør oppdateres til prepared statements for full beskyttelse.
+> **Merk:** Noen eldre deler av koden (f.eks. i `kontakt_skjema.php`) bruker direkte strenginterpolasjon i SQL-spørringer. Dette bør oppdateres til prepared statements for full beskyttelse. dette er noe som ikke blir tatt hensyn til her i dette projektet på grunn av dette kun er en skole oppgave utført i grupper 
