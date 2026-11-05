@@ -6,7 +6,12 @@ RUN docker-php-ext-install mysqli \
     && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:10000>/' \
        /etc/apache2/sites-available/000-default.conf
 
-COPY ca.pem /var/www/html/ca.pem
+# Kopier nettsidens filer til Apache
+COPY . /var/www/html/
+
+# Flytt CA-sertifikatet ut av offentlig webmappe
+RUN mv /var/www/html/ca.pem /etc/ssl/certs/aiven-ca.pem \
+    && chown -R www-data:www-data /var/www/html
 
 EXPOSE 10000
 
