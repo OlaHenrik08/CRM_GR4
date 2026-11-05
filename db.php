@@ -15,7 +15,7 @@ mysqli_ssl_set(
     $conn,
     null,
     null,
-    __DIR__ . '/ca.pem',
+    '/etc/ssl/certs/aiven-ca.pem',
     null,
     null
 );
@@ -36,6 +36,12 @@ if (!$connected) {
     exit('Kunne ikke koble til databasen.');
 }
 
+if (!$servername || !$username || !$password || !$db) {
+    error_log('Missing database environment variables');
+    http_response_code(500);
+    exit('Database configuration is incomplete.');
+}
+
 $conn->set_charset('utf8mb4');
 
 // Hjelpefunksjon for å unngå XSS
@@ -43,3 +49,4 @@ function h($s) {
     return htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8');
 }
 ?>
+
